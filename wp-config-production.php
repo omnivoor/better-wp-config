@@ -1,7 +1,7 @@
 <?php
 
 /** The name of the database for WordPress */
-define('DB_NAME', 'XXXX-local');
+define('DB_NAME', 'XXXX-production');
 
 /** MySQL database username */
 define('DB_USER', 'root');

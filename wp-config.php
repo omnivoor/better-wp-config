@@ -1,41 +1,34 @@
 <?php
-/**
- * The base configurations of the WordPress.
- *
- * This file has the following configurations: MySQL settings, Table Prefix,
- * Secret Keys, WordPress Language, and ABSPATH. You can find more information
- * by visiting {@link http://codex.wordpress.org/Editing_wp-config.php Editing
- * wp-config.php} Codex page. You can get the MySQL settings from your web host.
- *
- * This file is used by the wp-config.php creation script during the
- * installation. You don't have to use the web site, you can just copy this file
- * to "wp-config.php" and fill in the values.
- *
- * @package WordPress
- */
 
-if (file_exists(dirname(__FILE__) . '/wp-config-local.php')) {
-	include(dirname(__FILE__) . '/wp-config-local.php');
-	define('WP_LOCAL_DEV', true);
+/**
+ * Define the type of server.
+ * Note: Define them all, don't skip one if other is already defined
+ */
+$local			=	'wp-config-local.php';
+$development	=	'wp-config-development.php';
+$staging		=	'wp-config-staging.php';
+$production		=	'wp-config-production.php';
+
+define('WP_LOCAL_SERVER', file_exists(ABSPATH . $local));
+define('WP_DEV_SERVER', file_exists(ABSPATH . $development));
+define('WP_STAGING_SERVER', file_exists(ABSPATH . $staging));
+
+if (WP_LOCAL_SERVER) {
+
+	require ABSPATH . $local;
+
+} else if (WP_DEV_SERVER) {
+
+	require ABSPATH . $development;
+
+} elseif (WP_STAGING_SERVER) {
+
+	require ABSPATH . $staging;
+
 } else {
-	// ** MySQL settings - You can get this info from your web host ** //
-	/** The name of the database for WordPress */
-	define('DB_NAME', 'database_name_here');
-	
-	/** MySQL database username */
-	define('DB_USER', 'username_here');
-	
-	/** MySQL database password */
-	define('DB_PASSWORD', 'password_here');
-	
-	/** MySQL hostname */
-	define('DB_HOST', 'localhost');
-	
-	/** Database Charset to use in creating database tables. */
-	define('DB_CHARSET', 'utf8');
-	
-	/** The Database Collate type. Don't change this if in doubt. */
-	define('DB_COLLATE', '');
+
+	require ABSPATH . $production;
+
 }
 
 /**#@+
@@ -83,7 +76,25 @@ define('WPLANG', '');
  * It is strongly recommended that plugin and theme developers use WP_DEBUG
  * in their development environments.
  */
-define('WP_DEBUG', false);
+if (WP_LOCAL_SERVER || WP_DEV_SERVER) {
+
+	define('WP_DEBUG', true);
+	define('WP_DEBUG_LOG', true); // Stored in wp-content/debug.log
+	define('WP_DEBUG_DISPLAY', true);
+	define('SCRIPT_DEBUG', true);
+	define('SAVEQUERIES', true);
+
+} else if (WP_STAGING_SERVER) {
+
+	define('WP_DEBUG', true);
+	define('WP_DEBUG_LOG', true); // Stored in wp-content/debug.log
+	define('WP_DEBUG_DISPLAY', false);
+
+} else {
+
+	define('WP_DEBUG', false);
+
+}
 
 /**
  * If you don’t plan on using revisions to check the “earlier versions”
