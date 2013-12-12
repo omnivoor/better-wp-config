@@ -85,6 +85,28 @@ define('WPLANG', '');
  */
 define('WP_DEBUG', false);
 
+/**
+ * If you don’t plan on using revisions to check the “earlier versions”
+ * of your posts, you definitely should disable this feature.
+ */
+define('WP_POST_REVISIONS', false);
+
+/**
+ * The first constant disables the editing of theme and plugin files.
+ * The second constant disables installing & updating themes and plugins.
+ */
+define('DISALLOW_FILE_EDIT', false);
+define('DISALLOW_FILE_MODS', false);
+
+/**
+ * If you ever need to move your website to a new domain (or a new subdomain,
+ * or a new folder), define this constant before moving your files and database.
+ * Log in with your WP credentials on yournewwebsite.com/login.php and after that,
+ * check if the home URL has changed on the General Options page. After confirming
+ * that it has changed, disable the constant again.
+ */
+define('RELOCATE', false);
+
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
